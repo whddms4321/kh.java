@@ -1,0 +1,118 @@
+# DB(데이터베이스)
+1 day
+
+
+
+
+
+2 day
+함수
+
+- 문자 처리 함수 -length
+  : 문자의 길이를 숫자로 나타내준다.(자바 length와 유사)
+  - ex)legnth(email) : email의 길이를 표현
+  
+  --1. LENGTH 문자열 길이 반환
+  select emp_name, email, length(emp_name) from employee;
+  --2. LENGTH 문자열 바이트 크기로 반환
+  SELECT EMP_NAME, LENGTHB(EMP_NAME),EMAIL,LENGTHB(EMAIL) FROM EMPLOYEE;
+ 
+- 문자처리 함수 -INSTR
+ : 찾는 문자(열)이 지정한 위치부터 지정한 회수만큼 나타난 시작위치를 반환
+  --3. INSTR - 문자열 찾기
+  SELECT INSTR('HELLO WORLD HI HIGH','H',1,1) FROM DUAL;
+  SELECT INSTR('HELLO WORLD HI HIGH','H',1,2) FROM DUAL;
+  SELECT INSTR('HELLO WORLD HI HIGH','H',1,3) FROM DUAL;
+  SELECT INSTR('HELLO WORLD HI HIGH','H',-1,1) FROM DUAL;
+  SELECT INSTR('HELLO WORLD HI HIGH','H',-1,2) FROM DUAL;
+  SELECT INSTR('HELLO WORLD HI HIGH','H',2,1) FROM DUAL;
+  -- 예제문제)
+  EMAIL컬럼중에서 @문자 위치를 구하시오.
+SELECT INSTR(EMAIL,'@',1,1) FROM EMPLOYEE;
+
+ - 문자 처리 함수 -LPAD와RPAD  
+ : LPAD는 정한 문자열까지만 출력하고 부족하면 정해진 기호를 왼쪽에서 채워주고, RPAD는 반대로 오른쪽에서 체워줌
+  -- LAPD/RPAD
+  SELECT LPAD(EMAIL, 20, '#') FROM EMPLOYEE;
+  SELECT LPAD(EMAIL, 10, '#') FROM EMPLOYEE;
+  SELECT RPAD(EMAIL, 10, '#') FROM EMPLOYEE;
+  -- LTRIM/RTRIM
+  :LTRIM은 왼쪽에서 공백을 삭제, RTRIM은 오른쪽에서 공백을 삭제해줌
+  SELECT LTRIM('     KH') FROM DUAL;
+  
+ - 문자처리함수 -TRIM
+  : 주어진 컬럼 문자열의 앞/뒤/양쪽에 있는 지정한 문자를 제거한 나머지를 반환, 문자 하나만 지정가능
+  EX) SELECT TRIM('Z' FROM 'ZZZZKHZZZ') FROM DUAL;
+      SELECT TRIM (BOTH 'Z' FROM 'ZZZKH') FROM DUAL;
+      SELECT TRIM(LEADING 'Z' FROM 'ZZZKHZZZ') FROM DUAL;
+      SELECT TRIM(TRAILING 'Z' FROM 'ZZZKHZZZ' ) FROM DUAL;
+  - 문자처리함수 - SUBSTR
+  : 컬럼이나 문자열에서 지정한 위치부터 지정한 개수의 문자열을 잘라내어 리턴
+- 
+  --LOWER/UPPER/INITCAP
+  SELECT LOWER('WELOCME TO MY WORLD') FROM DUAL;
+  SELECT UPPER('WELOCME TO MY WORLD') FROM DUAL;
+  SELECT INITCAP('WELCOME TO MY WORLD') FROM DUAL;
+  --CONCAT
+  SELECT CONCAT('ABCD','가나다라') FROM DUAL;
+  --REPLACE
+  SELECT REPLACE('ABCDEFG','DEF','한글') FROM DUAL;
+  
+  - 숫자 처리 함수
+  - ABS,MOD,ROUND,FLOOR,TRUNC,CEIL
+  - ABS는 절대값 함수
+  - ROUND 반올림 함수
+  - FLOOR 버림 함수
+  - TRUNC 위치를 지정하야 버림을 실행하는 함수
+  - CEIL은 무조껀 올리는 함수
+  
+  - 날짜 처리 함수
+  - --그의 현재시간을 알 수 있는 명령어
+    SELECT SYSDATE, CURRENT_DATE, LOCALTIMESTAMP,CURRENT_TIMESTAMP FROM DUAL;
+    --MONTHS_BETWEEN
+    SELECT EMP_NAME, FLOOR(MONTHS_BETWEEN(SYSDATE,HIRE_DATE)) FROM EMPLOYEE;
+    --ADD MONTHS
+    SELECT EMP_NAME, ADD_MONTHS(HIRE_DATE,3) FROM EMPLOYEE;
+    // 동건씨가 오늘 다시 입대 복무기간은 1년6개월 1. 입대 일짜2. 전역하는 날짜, 3.먹어야 하는 짬밥 수(하루3끼) DUAL테이블 이용해서 출력
+    SELECT '서동건' 이름, SYSDATE,(ADD_MONTHS(SYSDATE,18)-SYSDATE) 그날은안와, (ADD_MONTHS(SYSDATE,18)-SYSDATE)*3 FROM DUAL;
+    --NEXT_DAY
+    SELECT SYSDATE, NEXT_DAY(SYSDATE,'월요일') FROM DUAL;
+    SELECT SYSDATE, NEXT_DAY(SYSDATE,'수요일') FROM DUAL;
+    --1=일요일.2=월요일..... 7=토요일
+    SELECT SYSDATE, NEXT_DAY(SYSDATE,2) FROM DUAL;
+    SELECT SYSDATE, NEXT_DAY(SYSDATE,'MONDAY') FROM DUAL;
+    --LAST_DAY
+    SELECT SYSDATE, LAST_DAY(SYSDATE+) FROM DUAL;
+    --EXTRACT
+    SELECT EXTRACT (YEAR FROM SYSDATE), EXTRACT (DAY FROM SYSDATE)FROM DUAL;
+    SELECT EXTRACT (MONTH FROM SYSDATE) FROM DUAL;
+    
+  - 형변환 함수
+  - TO_CHAR
+      SELECT TO_CHAR(SYSDATE,'YYYY-MM-DD') FROM DUAL;
+    SELECT TO_CHAR(SYSDATE,'YY-MM-DD') FROM DUAL;
+    SELECT TO_CHAR(SYSDATE,'YY.MM.DD.DAY') FROM DUAL;
+    SELECT TO_CHAR(SYSDATE,'YY.MM.DD.DY.PMHH"시"MI"분"SS"초"') FROM DUAL;
+    SELECT TO_CHAR(SYSDATE,'FMYY.MM.DD.DY.HH24"시"MI"분"SS"초"') FROM DUAL;
+
+    select to_char(500000,'999,999,999'),to_char(50000000000000,'999,999,999'),to_char(500000,'L999,999,999,999') FROM DUAL;
+    --TO_DATE
+    SELECT TO_DATE(20000101,'YYYYMMDD') FROM DUAL;
+    SELECT TO_CHAR(TO_DATE(20000101,'YYYYMMDD'),'YYYY/MM/DD HH24:MI:SS') FROM DUAL;
+    -- EMPLOYEE테이블에서 2000년도 이후에 입사한 사원의 이름과입사일 출력
+    SELECT EMP_NAME,HIRE_DATE FROM EMPLOYEE WHERE HIRE_DATE > TO_DATE(20000101,'YYYYMMDD') ;
+    -- TO_NUMBER
+    SELECT TO_NUMBER('5,000,000','9,999,999') FROM DUAL;
+    SELECT TO_NUMBER('123AA') FROM DUAL;
+    SELECT '1000'+'100' FROM DUAL;
+    SELECT '1000'+'10D0' FROM DUAL;
+  
+   
+  - DECODE 선택함수
+    : 여러가지 경우에 선택할 수 있는 기능을 제공(일치하는 값)
+    SELECT EMP_NAME, EMP_NO,
+    DECODE(SUBSTR(EMP_NO,8,1))
+  --CASE 선택함수
+    : 여러 가지 경우에 선택할 수 있는 기능을 제공(범위 값 가능) 
+    
+    - 그룹함수 SUM
